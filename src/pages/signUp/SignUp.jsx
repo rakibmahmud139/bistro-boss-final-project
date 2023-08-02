@@ -3,6 +3,8 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../provider/AuthProvider";
+import Swal from "sweetalert2";
+import SocialLogin from "../shared/SocialLogin/SocialLogin";
 
 const SignUp = () => {
     const { createUser, updateUserProfile } = useContext(AuthContext);
@@ -15,11 +17,33 @@ const SignUp = () => {
             .then(res => {
                 const createUser = res.user;
                 console.log(createUser);
+
                 updateUserProfile(data.name, data.photoURL)
+
                     .then(() => {
-                        console.log('User profile info update');
-                        reset();
-                        navigate('/');
+                        const saveUser = { name: data.name, email: data.email }
+
+                        fetch('http://localhost:5000/users', {
+                            method: "POST",
+                            headers: {
+                                "content-type": "application/json"
+                            },
+                            body: JSON.stringify(saveUser)
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log(data);
+                                if (data.insertedId) {
+
+                                    reset();
+                                    Swal.fire(
+                                        'Sign Up!',
+                                        'Sign Up SuccessFul.',
+                                        'success'
+                                    )
+                                    navigate('/');
+                                }
+                            })
                     })
                     .catch(err => console.log(err))
             })
@@ -91,6 +115,7 @@ const SignUp = () => {
                             </div>
                         </form>
                         <p className="text-center mb-3">Have An Account? <Link to='/login' className="text-accent uppercase">Go to login</Link></p>
+                        <SocialLogin />
                     </div>
                 </div>
             </div>
