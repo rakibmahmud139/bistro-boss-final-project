@@ -23,7 +23,7 @@ const SignUp = () => {
                     .then(() => {
                         const saveUser = { name: data.name, email: data.email }
 
-                        fetch('http://localhost:5000/users', {
+                        fetch('https://bistro-boss-server-khaki-nu.vercel.app/users', {
                             method: "POST",
                             headers: {
                                 "content-type": "application/json"

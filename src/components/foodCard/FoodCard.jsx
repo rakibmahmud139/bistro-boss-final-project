@@ -19,7 +19,7 @@ const FoodCard = ({ item }) => {
             const cartItem = { menuItemId: _id, name, image, price, email: user.email }
 
             //send data in server site
-            fetch('http://localhost:5000/carts', {
+            fetch('https://bistro-boss-server-khaki-nu.vercel.app/carts', {
                 method: "POST",
                 headers: {
                     "content-type": "application/json"
